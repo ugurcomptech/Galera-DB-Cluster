@@ -20,15 +20,47 @@ Bu proje, **3 düğümlü (node)** bir Galera Cluster kurulumu gerçekleştirmek
 ## 📊 Galera Cluster Mimarisi
 
 ```mermaid
-flowchart LR
-    A[Node1 - 10.0.0.1] <--> B[Node2 - 10.0.0.2]
-    B <--> C[Node3 - 10.0.0.3]
-    C <--> A
+flowchart TD
     subgraph Galera Cluster
-        A
-        B
-        C
+        Node1["🖥️ Node 1\nIP: 10.0.0.1"]
+        Node2["🖥️ Node 2\nIP: 10.0.0.2"]
+        Node3["🖥️ Node 3\nIP: 10.0.0.3"]
     end
+
+    subgraph Replikasyon Türü
+        SST["📦 SST\n(State Snapshot Transfer)"]
+        IST["🔁 IST\n(Incremental State Transfer)"]
+    end
+
+    subgraph Diğer Bileşenler
+        Quorum["🔗 Quorum\n(>50% aktif node)"]
+        Provider["📚 Galera Provider\n(libgalera_smm.so)"]
+    end
+
+    Client1["👤 Client"] --> Node1
+    Client2["👤 Client"] --> Node2
+    Client3["👤 Client"] --> Node3
+
+    Node1 <--> Node2
+    Node2 <--> Node3
+    Node3 <--> Node1
+
+    Node1 --> SST
+    Node2 --> IST
+
+    Node1 --> Quorum
+    Node2 --> Quorum
+    Node3 --> Quorum
+
+    Node1 --> Provider
+    Node2 --> Provider
+    Node3 --> Provider
+
+    classDef node fill:#e0f7fa,stroke:#00796b,stroke-width:2px;
+    classDef logic fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    class Node1,Node2,Node3 node;
+    class SST,IST,Quorum,Provider logic;
+
 ```
 
 ## ⚙️ Örnek `my.cnf` Yapılandırması

@@ -39,10 +39,10 @@ flowchart TD
     N2 <--> N3
     N3 <--> N1
 
-    SST["SST"]
-    IST["IST"]
-    Quorum["Quorum > 50%"]
-    Provider["Galera Provider"]
+    SST["SST\n(State Snapshot Transfer)"]
+    IST["IST\n(Incremental State Transfer)"]
+    Quorum["Quorum\n(Majority of nodes > 50%)"]
+    Provider["Galera Provider\n(libgalera_smm.so)"]
 
     N1 --> SST
     N2 --> IST
@@ -52,24 +52,6 @@ flowchart TD
     N1 --> Provider
     N2 --> Provider
     N3 --> Provider
-
-    note right of SST
-        State Snapshot Transfer:\n
-        Yeni node eklendiğinde\ngüncel veriler tam olarak aktarılır.
-    end
-
-    note right of IST
-        Incremental State Transfer:\n
-        Eksik güncellemeler küçük parçalar\nşeklinde iletilir.
-    end
-
-    note bottom of Quorum
-        Cluster’ın çalışabilmesi için\nnode’ların çoğunluğu gerekir.
-    end
-
-    note bottom of Provider
-        Galera replication’ı sağlayan\nlibgalera_smm.so eklentisidir.
-    end
 
 ```
 

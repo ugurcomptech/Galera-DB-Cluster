@@ -21,45 +21,55 @@ Bu proje, **3 düğümlü (node)** bir Galera Cluster kurulumu gerçekleştirmek
 
 ```mermaid
 flowchart TD
-    subgraph Galera Cluster
-        Node1["🖥️ Node 1\nIP: 10.0.0.1"]
-        Node2["🖥️ Node 2\nIP: 10.0.0.2"]
-        Node3["🖥️ Node 3\nIP: 10.0.0.3"]
+    subgraph Galera_Cluster
+        N1["Node1\n10.0.0.1"]
+        N2["Node2\n10.0.0.2"]
+        N3["Node3\n10.0.0.3"]
     end
 
-    subgraph Replikasyon Türü
-        SST["📦 SST\n(State Snapshot Transfer)"]
-        IST["🔁 IST\n(Incremental State Transfer)"]
+    subgraph Clients
+        C1["Client App 1"]
+        C2["Client App 2"]
     end
 
-    subgraph Diğer Bileşenler
-        Quorum["🔗 Quorum\n(>50% aktif node)"]
-        Provider["📚 Galera Provider\n(libgalera_smm.so)"]
+    C1 --> N1
+    C2 --> N2
+
+    N1 <--> N2
+    N2 <--> N3
+    N3 <--> N1
+
+    SST["SST"]
+    IST["IST"]
+    Quorum["Quorum > 50%"]
+    Provider["Galera Provider"]
+
+    N1 --> SST
+    N2 --> IST
+    N1 --> Quorum
+    N2 --> Quorum
+    N3 --> Quorum
+    N1 --> Provider
+    N2 --> Provider
+    N3 --> Provider
+
+    note right of SST
+        State Snapshot Transfer:\n
+        Yeni node eklendiğinde\ngüncel veriler tam olarak aktarılır.
     end
 
-    Client1["👤 Client"] --> Node1
-    Client2["👤 Client"] --> Node2
-    Client3["👤 Client"] --> Node3
+    note right of IST
+        Incremental State Transfer:\n
+        Eksik güncellemeler küçük parçalar\nşeklinde iletilir.
+    end
 
-    Node1 <--> Node2
-    Node2 <--> Node3
-    Node3 <--> Node1
+    note bottom of Quorum
+        Cluster’ın çalışabilmesi için\nnode’ların çoğunluğu gerekir.
+    end
 
-    Node1 --> SST
-    Node2 --> IST
-
-    Node1 --> Quorum
-    Node2 --> Quorum
-    Node3 --> Quorum
-
-    Node1 --> Provider
-    Node2 --> Provider
-    Node3 --> Provider
-
-    classDef node fill:#e0f7fa,stroke:#00796b,stroke-width:2px;
-    classDef logic fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-    class Node1,Node2,Node3 node;
-    class SST,IST,Quorum,Provider logic;
+    note bottom of Provider
+        Galera replication’ı sağlayan\nlibgalera_smm.so eklentisidir.
+    end
 
 ```
 

@@ -93,6 +93,4 @@ sudo systemctl start mariadb
 mysql -u root -p -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
 ```
 
-## 🛡️ Lisans
 
-MIT License

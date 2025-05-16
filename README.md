@@ -22,9 +22,9 @@ Bu proje, **3 düğümlü (node)** bir Galera Cluster kurulumu gerçekleştirmek
 ```mermaid
 flowchart TD
     subgraph Galera_Cluster
-        N1["Node1\n10.0.0.1"]
-        N2["Node2\n10.0.0.2"]
-        N3["Node3\n10.0.0.3"]
+        N1["Node1 - 10.0.0.1"]
+        N2["Node2 - 10.0.0.2"]
+        N3["Node3 - 10.0.0.3"]
     end
 
     subgraph Clients
@@ -39,10 +39,10 @@ flowchart TD
     N2 <--> N3
     N3 <--> N1
 
-    SST["SST\n(State Snapshot Transfer)"]
-    IST["IST\n(Incremental State Transfer)"]
-    Quorum["Quorum\n(Majority of nodes > 50%)"]
-    Provider["Galera Provider\n(libgalera_smm.so)"]
+    SST["SST (State Snapshot Transfer)"]
+    IST["IST (Incremental State Transfer)"]
+    Quorum["Quorum (Majority of nodes > 50%)"]
+    Provider["Galera Provider (libgalera_smm.so)"]
 
     N1 --> SST
     N2 --> IST
